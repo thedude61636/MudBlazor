@@ -192,11 +192,11 @@ namespace MudBlazor
                 Swap<Column<T>>(RenderedColumns, dragAndDropSourceIndex, dragAndDropDestinationIndex);
 
                 // swap source / destination
-                var dest = dragAndDropDestination.HeaderCell.Width;
-                var src = dragAndDropSource.HeaderCell.Width;
+                var dest = dragAndDropDestination.Width;
+                var src = dragAndDropSource.Width;
 
-                dragAndDropSource.HeaderCell.Width = dest;
-                dragAndDropDestination.HeaderCell.Width = src;
+                dragAndDropSource.Width = dest;
+                dragAndDropDestination.Width = src;
 
                 StateHasChanged();
             }

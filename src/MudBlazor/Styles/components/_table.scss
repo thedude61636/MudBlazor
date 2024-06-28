@@ -97,7 +97,11 @@
 }
 
 
-
+.table-cell-span {
+  display: block;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
 .mud-table-cell {
   display: table-cell;
   padding: 16px;

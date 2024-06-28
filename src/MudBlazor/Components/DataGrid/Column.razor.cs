@@ -163,8 +163,36 @@ namespace MudBlazor
         [Parameter]
         public virtual bool? Sortable { get; set; }
 
+
+        /// <summary>
+        /// The width for this header cell, in pixels.
+        /// </summary>
+        /// <remarks>
+        /// Defaults to <c>null</c>.
+        /// </remarks>
+        public double? Width { get; internal set; }
+
+        /// <summary>
+        /// The min-width for this header cell in pixels
+        /// <remarks>
+        /// defaults to 0
+        /// </remarks>
+        /// </summary>
+        [Parameter]
+        public double MinWidth { get; set; }
+
+        /// <summary>
+        /// The min-width for this header cell in pixels
+        /// <remarks>
+        /// defaults to 0
+        /// </remarks>
+        /// </summary>
+        [Parameter]
+        public double? MaxWidth { get; set; }
+
         /// <summary>
         /// Allows this column's width to be changed.
+        /// And if column reaches size 0 it will be hidden if you enabled hidden columns.
         /// </summary>
         [Parameter]
         public virtual bool? Resizable { get; set; }
@@ -709,6 +737,39 @@ namespace MudBlazor
         protected internal virtual Type PropertyType { get; }
 
         protected internal abstract void SetProperty(object item, object value);
+
+        #endregion
+
+        #region Events
+
+        internal async Task<double> UpdateColumnWidth(double targetWidth, double gridHeight, bool finishResize)
+        {
+            if (targetWidth >= MinWidth && (MaxWidth == null || targetWidth <= MaxWidth))
+            {
+                await HeaderCell.SetResizerHeightAsync(gridHeight);
+                Width = targetWidth;
+                await InvokeAsync(StateHasChanged);
+            }
+
+            if (finishResize && targetWidth <= 0 && hideable)
+            {
+                await HideAsync();
+            }
+
+            if (finishResize)
+            {
+                await HeaderCell.FinishResizeAsync();
+                await InvokeAsync(StateHasChanged);
+            }
+
+            return await HeaderCell.GetCurrentCellWidth();
+        }
+
+        internal void ClearWidth()
+        {
+            Width = null;
+            StateHasChanged();
+        }
 
         #endregion
     }

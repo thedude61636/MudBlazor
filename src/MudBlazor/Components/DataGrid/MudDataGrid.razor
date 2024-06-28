@@ -485,25 +485,29 @@
                     }
                     else if (column.Culture is not null && column.isNumber)
                     {
-                        if (column.ContentFormat is not null)
-                        {
-                            @(((IFormattable)cell._valueNumber)?.ToString(column.ContentFormat, column.Culture))
-                        }
-                        else
-                        {
-                            @cell._valueNumber?.ToString(column.Culture)
-                        }
+                        <span class="table-cell-span" style="@cell.computedCellSpanStyle">
+                            @if (column.ContentFormat is not null)
+                            {
+                                @(((IFormattable)cell._valueNumber)?.ToString(column.ContentFormat, column.Culture))
+                            }
+                            else
+                            {
+                                @cell._valueNumber?.ToString(column.Culture)
+                            }
+                        </span>
                     }
                     else
                     {
-                        if (column.ContentFormat is not null)
-                        {
-                            @(((IFormattable)cell.ComputedValue)?.ToString(column.ContentFormat, column.Culture))
-                        }
-                        else
-                        {
-                            @cell.ComputedValue
-                        }
+                        <span class="table-cell-span" style="@cell.computedCellSpanStyle">
+                            @if (column.ContentFormat is not null)
+                            {
+                                @(((IFormattable)cell.ComputedValue)?.ToString(column.ContentFormat, column.Culture))
+                            }
+                            else
+                            {
+                                @cell.ComputedValue
+                            }
+                        </span>
                     }
                 }
             </td>

@@ -78,7 +78,12 @@ namespace MudBlazor
             new StyleBuilder()
                 .AddStyle(Column?.HeaderStyleFunc?.Invoke(DataGrid?.CurrentPageItems ?? Enumerable.Empty<T>()))
                 .AddStyle(Column?.HeaderStyle)
-                .AddStyle("width", Width?.ToPx(), when: Width.HasValue)
+                .AddStyle("width", Column?.Width?.ToPx())
+                .AddStyle("min-width",Column?.MinWidth.ToPx())
+                .AddStyle("max-width",Column?.Width?.ToPx())
+                .AddStyle("overflow", "hidden")
+                .AddStyle("text-overflow", "ellipsis")
+                .AddStyle("white-space", "nowrap")
                 .AddStyle(Style)
             .Build();
 
@@ -108,14 +113,7 @@ namespace MudBlazor
 
         private ElementReference _headerElement;
 
-        /// <summary>
-        /// The width for this header cell, in pixels.
-        /// </summary>
-        /// <remarks>
-        /// Defaults to <c>null</c>.
-        /// </remarks>
-        public double? Width { get; internal set; }
-
+      
         private double? _resizerHeight;
         private bool _isResizing;
         private bool _filtersMenuVisible;
@@ -295,7 +293,6 @@ namespace MudBlazor
 
             if (args.Detail > 1) // Double click clears the width, hence setting it to minimum size.
             {
-                Width = null;
                 return;
             }
 
@@ -313,29 +310,24 @@ namespace MudBlazor
             if (!_isResizing)
                 _resizerHeight = null;
         }
-
-        internal async Task<double> UpdateColumnWidth(double targetWidth, double gridHeight, bool finishResize)
-        {
-            if (targetWidth > 0)
-            {
-                _resizerHeight = gridHeight;
-                Width = targetWidth;
-                await InvokeAsync(StateHasChanged);
-            }
-
-            if (finishResize)
-            {
-                _isResizing = false;
-                await InvokeAsync(StateHasChanged);
-            }
-
-            return await GetCurrentCellWidth();
-        }
-
+        
+        
         internal async Task<double> GetCurrentCellWidth()
         {
             var boundingRect = await _headerElement.MudGetBoundingClientRectAsync();
             return boundingRect.Width;
+        }
+        
+        public async Task FinishResizeAsync()
+        {
+            _isResizing = false;
+            await InvokeAsync(StateHasChanged);
+        }
+
+        public async Task SetResizerHeightAsync(double gridHeight)
+        {
+            _resizerHeight = gridHeight;
+            await InvokeAsync(StateHasChanged);
         }
 
         internal async Task SortChangedAsync(MouseEventArgs args)
