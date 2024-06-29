@@ -79,8 +79,8 @@ namespace MudBlazor
                 .AddStyle(Column?.HeaderStyleFunc?.Invoke(DataGrid?.CurrentPageItems ?? Enumerable.Empty<T>()))
                 .AddStyle(Column?.HeaderStyle)
                 .AddStyle("width", Column?.Width?.ToPx())
-                .AddStyle("min-width",Column?.MinWidth.ToPx())
-                .AddStyle("max-width",Column?.Width?.ToPx())
+                .AddStyle("min-width", Column?.MinWidth.ToPx())
+                .AddStyle("max-width", Column?.Width?.ToPx())
                 .AddStyle("overflow", "hidden")
                 .AddStyle("text-overflow", "ellipsis")
                 .AddStyle("white-space", "nowrap")
@@ -113,7 +113,7 @@ namespace MudBlazor
 
         private ElementReference _headerElement;
 
-      
+
         private double? _resizerHeight;
         private bool _isResizing;
         private bool _filtersMenuVisible;
@@ -310,14 +310,14 @@ namespace MudBlazor
             if (!_isResizing)
                 _resizerHeight = null;
         }
-        
-        
+
+
         internal async Task<double> GetCurrentCellWidth()
         {
             var boundingRect = await _headerElement.MudGetBoundingClientRectAsync();
             return boundingRect.Width;
         }
-        
+
         public async Task FinishResizeAsync()
         {
             _isResizing = false;
