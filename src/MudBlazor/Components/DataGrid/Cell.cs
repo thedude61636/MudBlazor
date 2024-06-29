@@ -52,7 +52,7 @@ namespace MudBlazor
                     .AddStyle(_column.CellStyleFunc?.Invoke(_item))
                     .AddStyle(_column.CellStyle)
                     .AddStyle("min-width",_column.MinWidth.ToPx(), _column.MinWidth!=0)
-                    .AddStyle("max-width",_column.MaxWidth.ToPx(),_column.MaxWidth!= null)
+                    .AddStyle("max-width",_column.Width.ToPx(),_column.Width.HasValue)
                     .AddStyle("overflow", "hidden")
                     .AddStyle("text-overflow", "ellipsis")
                     .AddStyle("white-space", "nowrap")
@@ -68,7 +68,7 @@ namespace MudBlazor
                     .AddStyle(_column.CellStyle)
                     .AddStyle("width", _column.Width?.ToPx())
                     .AddStyle("min-width",_column.MinWidth.ToPx())
-                    .AddStyle("max-width",_column.MaxWidth?.ToPx())
+                    .AddStyle("max-width",_column.Width?.ToPx())
                     .Build();
             }
         }
